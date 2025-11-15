@@ -208,3 +208,38 @@ if __name__ == "__main__":
     print("Multiplication of given two matrices is:")
     for row in result:
         print(" ".join(map(str, row)))
+
+
+# Given a m x n matrix. The problem is to sort the given matrix in strict order. 
+# Here strict order means that the matrix is sorted in a way such that all elements in a row are sorted in increasing order and for row ‘i’, where 1 <= i <= m-1, 
+# The first element is greater than or equal to the last element of row 'i-1'.
+# Naive Approach - O(mn Log mn) Time and O(mn) Space
+# First store the matrix elements in a m x n sized 1D array, then sort the array and finally copy the elements back to the matrix,
+
+
+
+v = [[5,4,7], [1,3,8], [2,9,6]]
+# get the len of a rows
+n = len(v)
+# intializing the array to hold each individual value
+x=[]
+for i in range(n):
+    for j in range(n):
+        #append each value to the array
+        x.append(v[i][j])
+#sort the array
+x.sort()
+
+#rebuild the matrix structure
+k=0
+for i in range(n):
+    for j in range(n):
+        v[i][j] = x[k]
+        k+=1
+
+print("Sorted Matrix will be: ")
+for i in range(n):
+    for j in range(n):
+        print(v[i][j], end=" ")
+    print("")
+
