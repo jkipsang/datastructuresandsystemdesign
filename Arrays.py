@@ -243,3 +243,102 @@ for i in range(n):
         print(v[i][j], end=" ")
     print("")
 
+
+
+# [Naive Approach] Comparing with all elements – O(n × m) Time and O(1) Space
+# The idea is to iterate through the entire matrix mat[][] and compare each element with x. 
+# If an element matches the x, we will return true. Otherwise, at the end of the traversal, we will return false.
+
+def searchMatrix(mat, x):
+    n = len(mat)
+    m = len(mat[0])
+
+    # traverse every element in the matrix
+    for i in range(n):
+        for j in range(m):
+            if mat[i][j] == x:
+                return True
+
+    return False
+
+if __name__ == "__main__":
+    mat = [
+        [1, 5, 9],
+        [14, 20, 21],
+        [30, 34, 43]
+    ]
+    x = 14
+    print("true" if searchMatrix(mat, x) else "false")
+
+
+
+
+# [Better Approach] Using Binary Search Twice - O(log n + log m) Time and O(1) Space
+
+# First, we locate the row where the target x might be by using binary search, and then we apply binary search again within that row. 
+# To find the correct row, we perform binary search on the first elements of the middle row.
+# Step By Step Implementations:
+# => Start with low = 0 and high = n - 1.
+# => If x is smaller than the first element of the middle row (a[mid][0]), then x will be smaller than all elements in rows >= mid, so update high = mid - 1.
+# => If x is greater than the first element of the middle row (a[mid][0]), then x will be greater than all elements in rows < mid, so store the current mid row and update low = mid + 1.
+# Once we have found the correct row, we can apply binary search within that row to search for the target element x.
+
+def search(arr, x):
+    lo=0
+    hi= len(arr) -1
+    while lo < hi:
+        mid = (lo+hi)//2
+        print(f"mid {mid}")
+        if x == arr[mid]:
+            print(f"arr[mid]: {arr[mid]}")
+            return True
+        if x < arr[mid]:
+            hi = mid-1
+            print(f"High: {hi}")
+        else:
+            lo = mid+1
+            print(f"Low: {lo}")
+    return False
+
+# function to search element x in fully 
+# sorted matrix
+def searchMatrix(mat, x):
+    n = len(mat)
+    m = len(mat[0])
+    lo = 0
+    hi = n - 1
+    row = -1
+
+    while lo <= hi:
+        mid = (lo + hi) // 2
+
+        # if the first element of mid row is equal to x,
+        # return true
+        if x == mat[mid][0]:
+            return True
+
+        # if x is greater than first element of mid row,
+        # store the mid row and search in lower half
+        if x > mat[mid][0]:
+            row = mid
+            lo = mid + 1
+
+        # if x is smaller than first element of mid row,
+        # search in upper half
+        else:
+            hi = mid - 1
+
+    # if x is smaller than all elements of mat[][]
+    if row == -1:
+        return False
+
+    return search(mat[row], x)
+
+if __name__ == "__main__":
+    mat = [[1, 5, 9], [14, 20, 21], [30, 34, 43]]
+    x = 14
+
+    if searchMatrix(mat, x):
+        print("true")
+    else:
+        print("false")
