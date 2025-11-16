@@ -342,3 +342,55 @@ if __name__ == "__main__":
         print("true")
     else:
         print("false")
+
+
+
+
+# [Expected Approach] Using Binary Search Once - O(log(n × m)) and O(1) Space
+
+# The idea is to consider the given matrix as 1D array and apply only one binary search.
+# For example, for a matrix of size n x m and we can consider it as a 1D array of size n*m, 
+# Then the first index would be 0 and last index would n*m-1. 
+# So, we need to do binary search from low = 0 to high = (n*m-1).
+
+
+def searchMatrix(mat, x):
+    n = len(mat)
+    m = len(mat[0])
+
+    lo, hi = 0, n * m - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+
+        # find row and column of element at mid index
+        row = mid // m
+        col = mid % m
+
+        # if x is found, return true
+        if mat[row][col] == x:
+            print(f"mat[row][col] == x:  {mat[row][col]} == {x}")
+            return True
+
+        # if x is greater than mat[row][col], search 
+        # in right half
+        if mat[row][col] < x:
+            lo = mid + 1
+            print(f"mat[row][col] == x:  {mat[row][col]} == {x}")
+        # if x is less than mat[row][col], search 
+        # in left half
+        else:
+            hi = mid - 1
+            print(f"mat[row][col] == x:  {mat[row][col]} == {x}")
+
+    return False
+
+if __name__ == "__main__":
+    mat =  [[1, 5, 9], 
+            [14, 20, 21], 
+            [30, 34, 43]]
+    x = 14
+
+    if searchMatrix(mat, x):
+        print("true")
+    else:
+        print("false")
